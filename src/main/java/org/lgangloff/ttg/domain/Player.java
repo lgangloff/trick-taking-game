@@ -1,12 +1,12 @@
 package org.lgangloff.ttg.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class Player {
 
 	private String name;
-	private Stack<Card> cards = new Stack<>();
+	private ArrayList<Card> cards = new ArrayList<>();
 	
 	
 	public Player(String name) {
@@ -15,15 +15,14 @@ public class Player {
 	}
 
 	public void add(Card card) {
-		this.cards.addElement(card);
+		this.cards.add(card);
 	}
 	
 	public Card play() {
-		return this.cards.pop();
+		return countCard() == 0 ? Card.NO_CARD :  this.cards.remove(0);
 	}
 	
 	public void displayGame() {
-		//System.out.println(name + " a " + this.cards.size() + " cartes: " + this.cards);
 		System.out.println(name + " a " + this.cards.size() + " cartes");
 	}
 
@@ -38,6 +37,10 @@ public class Player {
 
 	public void add(List<Card> allCardPlayed) {
 		this.cards.addAll(allCardPlayed);
+	}
+
+	public void displayCards() {
+		System.out.println(name + " a " + this.cards.size() + " cartes: " + this.cards);
 	} 
 	
 	

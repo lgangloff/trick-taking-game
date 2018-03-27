@@ -20,7 +20,7 @@ public class Battle {
 		this.players = players;
 	}
 
-	public void play() {
+	public void play(boolean show) {
 		Map<Player, Card> game = new HashMap<>();
 		lastResult = -1;
 		for (Player player : players) {
@@ -29,22 +29,24 @@ public class Battle {
 			lastResult = Math.max(cardPlayed.value, lastResult);
 		}
 		
-		historise(game);
-		while(isBattle()) {
-			play();
+		historise(game, show);
+		while(show && isBattle()) {
+			play(false);
+			play(true);
 		}
 	}
 
-	private void historise(Map<Player, Card> game) {
+	private void historise(Map<Player, Card> game, boolean show) {
 		history.push(game);
-		String depth  = StringUtils.repeat(" ", history.size());
-		System.out.print(depth + game);
+		String depth  = StringUtils.repeat(" ", history.size() - (show ? 1 : 0));
+		System.out.print(depth + (!show ? "[hidden]" : "") + game);
 		
 		if (isBattle())
 			System.out.println("=> Battle");
-		else
+		else if(show)
 			System.out.println( "=> Winner: " + getWinner());
-		
+		else
+			System.out.println();
 	}
 	
 	public Entry<Player, Card> getWinner() {
@@ -62,6 +64,6 @@ public class Battle {
 	}
 
 	public List<Card> getAllCardPlayed() {
-		return history.stream().flatMap(map->map.values().stream()).collect(Collectors.toList());
+		return history.stream().flatMap(map->map.values().stream()).filter(card->card!=Card.NO_CARD).collect(Collectors.toList());
 	}
 }

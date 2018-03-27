@@ -20,6 +20,8 @@ public class Application{
 		
 		players.add(new Player("Loïc"));
 		players.add(new Player("Nathan"));
+		players.add(new Player("Jessy"));
+		players.add(new Player("Dylan"));
 		
 
 		game.distribute(players);
@@ -29,11 +31,19 @@ public class Application{
 		int round = 0;
 		while(!playerWithAllCard().isPresent()) {
 			Battle battle = new Battle(players);
-			battle.play();
+			battle.play(true);
 			List<Card> allCardPlayed = battle.getAllCardPlayed();
 			battle.getWinner().getKey().add(allCardPlayed);
 			round++;
 			displayPlayersGame();
+			
+			if (round > 5000) {
+				for (Player player : players) {
+					player.displayCards();
+				}
+				System.out.println("Unable to find a winner after "+round+" rouds");
+				System.exit(0);;
+			}
 		}
 		System.out.println(playerWithAllCard().get() + " wins in "+round+" rouds");
 	}

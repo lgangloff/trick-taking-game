@@ -1,6 +1,8 @@
 package org.lgangloff.ttg.domain;
 
 public class Card {
+	public static final Card NO_CARD = new Card(0, "null", null);
+
 	public Card(int value, String name, CardType type) {
 		this.value = value;
 		this.name = name;
